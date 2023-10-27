@@ -1,34 +1,30 @@
 import React from 'react';
 import { Card, Col, Container, Row } from 'react-bootstrap';
-import { AutoForm, ErrorsField, NumField, SelectField, SubmitField, TextField } from 'uniforms-bootstrap5';
+import { AutoForm, ErrorsField, HiddenField, SubmitField, TextField } from 'uniforms-bootstrap5';
 import swal from 'sweetalert';
-import { Meteor } from 'meteor/meteor';
 import SimpleSchema2Bridge from 'uniforms-bridge-simple-schema-2';
 import SimpleSchema from 'simpl-schema';
-import { Stuffs } from '../../api/stuff/Stuff';
+import PropTypes from 'prop-types';
+import { Notes } from '../../api/note/Notes';
 
 // Create a schema to specify the structure of the data to appear in the form.
 const formSchema = new SimpleSchema({
-  name: String,
-  quantity: Number,
-  condition: {
-    type: String,
-    allowedValues: ['excellent', 'good', 'fair', 'poor'],
-    defaultValue: 'good',
-  },
+  note: String,
+  contactId: String,
+  owner: String,
+  createdAt: Date,
 });
 
 const bridge = new SimpleSchema2Bridge(formSchema);
 
 /* Renders the AddNote page for adding a document. */
-const AddStuff = () => {
+const AddNote = ({ owner, contactId }) => {
 
   // On submit, insert the data.
   const submit = (data, formRef) => {
-    const { name, quantity, condition } = data;
-    const owner = Meteor.user().username;
-    Stuffs.collection.insert(
-      { name, quantity, condition, owner },
+    const { note, createdAt } = data;
+    Notes.collection.insert(
+      { note, contactId, createdAt, owner },
       (error) => {
         if (error) {
           swal('Error', error.message, 'error');
@@ -45,16 +41,17 @@ const AddStuff = () => {
   return (
     <Container className="py-3">
       <Row className="justify-content-center">
-        <Col xs={5}>
-          <Col className="text-center"><h2>Add Stuff</h2></Col>
+        <Col xs={10}>
+          <Col className="text-center"><h4>Add Timestamped Note</h4></Col>
           <AutoForm ref={ref => { fRef = ref; }} schema={bridge} onSubmit={data => submit(data, fRef)}>
             <Card>
               <Card.Body>
-                <TextField name="name" />
-                <NumField name="quantity" decimal={null} />
-                <SelectField name="condition" />
+                <TextField name="note" />
                 <SubmitField value="Submit" />
                 <ErrorsField />
+                <HiddenField name="owner" value={owner} />
+                <HiddenField name="contactId" value={contactId} />
+                <HiddenField name="createdAt" value={new Date()} />
               </Card.Body>
             </Card>
           </AutoForm>
@@ -64,4 +61,9 @@ const AddStuff = () => {
   );
 };
 
-export default AddStuff;
+AddNote.propTypes = {
+  owner: PropTypes.string.isRequired,
+  contactId: PropTypes.string.isRequired,
+};
+
+export default AddNote;

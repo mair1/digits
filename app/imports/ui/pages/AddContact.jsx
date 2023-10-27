@@ -18,7 +18,7 @@ const formSchema = new SimpleSchema({
 
 const bridge = new SimpleSchema2Bridge(formSchema);
 
-/* Renders the AddContact page for adding a document. */
+/* Renders the AddNote page for adding a document. */
 const AddContact = () => {
 
   // On submit, insert the data.
