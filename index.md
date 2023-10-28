@@ -1,3 +1,12 @@
+<img src="doc/landing.png">
+Installation for this can be done using github and opening up the code files in a IDE program like Intellij and using terminal commands with meteor and mongo to run the website.
+
+digits is an simple website that holds contact information that can be added to and edited along with some other features like: 
+
+* Adding notes to each contact to document interactions and information along with timestamps when each note is added <img src="doc/timestamped_note.png">
+* An Admin page for contacts where all contacts in the database are shown along with who the owner of each is <img src="doc/digits_admin.png">
+
+
 ![](https://github.com/ics-software-engineering/meteor-application-template-react/raw/main/doc/landing-page.png)
 
 meteor-application-template-react is a sample Meteor 2.9 application that illustrates: 
